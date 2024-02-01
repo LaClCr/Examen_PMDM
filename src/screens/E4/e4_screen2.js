@@ -3,19 +3,16 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Audio } from 'expo-av';
 import ScreensContext from '../ScreensContext';
 
-
 const Ejercicio4_2 = ({ navigation }) => {
-
     const { uris, setUris } = useContext(ScreensContext);
     const [currentAudio, setCurrentAudio] = useState(0);
     const [sound, setSound] = useState(null);
 
     useEffect(() => {
-        playCurrentAudio();
-      }, [currentAudio]);
+        loadAndPlayAudio();
+    }, [currentAudio]);
 
-    const playCurrentAudio = async () => {
-        console.log("CURRENT AUDIO: " + currentAudio);
+    const loadAndPlayAudio = async () => {
         try {
             if (sound) {
                 await sound.stopAsync();
@@ -23,47 +20,36 @@ const Ejercicio4_2 = ({ navigation }) => {
             }
 
             const playbackObject = new Audio.Sound();
-            await playbackObject.loadAsync(
-                { uri: uris[currentAudio] },
-                { shouldPlay: true }
-            );
+            await playbackObject.loadAsync({ uri: uris[currentAudio] });
             setSound(playbackObject);
+            await playbackObject.playAsync();
         } catch (error) {
-            console.log('Error en el método play', error.message);
+            console.log('Error en el método loadAndPlayAudio', error.message);
         }
     };
 
-    const handlePrevious = async () => {
+    const handlePrevious = () => {
         if (currentAudio === 0) {
             setCurrentAudio(uris.length - 1);
         } else {
             setCurrentAudio(currentAudio - 1);
         }
-        playCurrentAudio();
     };
 
-    const handleNext = async () => {
+    const handleNext = () => {
         if (currentAudio === uris.length - 1) {
             setCurrentAudio(0);
         } else {
             setCurrentAudio(currentAudio + 1);
         }
-        playCurrentAudio();
     };
 
     return (
-        <View style={{ justifyContent: 'center', flex: 1, }}>
-            <Button
-                title="Anterior"
-                onPress={handlePrevious}
-            />
-            <Button
-                title="Siguiente"
-                onPress={handleNext}
-            />
+        <View style={{ justifyContent: 'center', flex: 1 }}>
+            <Button title="Anterior" onPress={handlePrevious} />
+            <Button title="Siguiente" onPress={handleNext} />
         </View>
     );
 };
-
 
 export default Ejercicio4_2;
