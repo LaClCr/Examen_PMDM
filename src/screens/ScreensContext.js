@@ -2,14 +2,12 @@ import { createContext, useState } from 'react';
 const ScreensContext = createContext();
 
 export const ScreensProvider = ({ children }) => {
-  const [album , setAlbum] = useState(null);
-  const [title , setTitle] = useState(null);
-  const [song , setSong] = useState(null);
+  const [uris, setUris] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
 
   return (
-    <ScreensContext.Provider value={{searchTerm, setSearchTerm, album , setAlbum, title , setTitle , song , setSong}}>
+    <ScreensContext.Provider value={{searchTerm, setSearchTerm, uris, setUris}}>
       {children}
     </ScreensContext.Provider>
   );

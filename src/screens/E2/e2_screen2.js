@@ -13,16 +13,15 @@ import ScreensContext from '../ScreensContext';
 export default function Ejercicio2_2() {
   const [album, setAlbum] = useState("");
   const [title, setTitle] = useState("");
-  const [songUri, setSongUri] = useState("");
   const [sound, setSound] = useState(null);
   const [data, setData] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0); // Nuevo estado para el índice
+  const [currentIndex, setCurrentIndex] = useState(0); 
 
   const { searchTerm } = useContext(ScreensContext);
 
   useEffect(() => {
     fetchData();
-  }, [currentIndex]); // Agrega currentIndex como dependencia para que se actualice al cambiar el índice
+  }, [currentIndex]); 
 
   const fetchData = async () => {
     try {
@@ -36,9 +35,6 @@ export default function Ejercicio2_2() {
       setTitle(t);
 
       const s = d.data[currentIndex].preview;
-      setSongUri(s);
-
-      // Cargar el sonido solo una vez
       const { sound } = await Audio.Sound.createAsync({ uri: s });
       setSound(sound);
 
